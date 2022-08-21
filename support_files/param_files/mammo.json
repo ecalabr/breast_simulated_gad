@@ -1,0 +1,60 @@
+{
+"T1":	{
+	"or": [["t1", "no"]],
+	"not": ["post"],
+	"reg": "fast_affine",
+	"reg_target": "T1FS",
+	"reg_option": {"reg_com": 0},
+	"bias": true
+	},
+
+"T1FS":	{
+	"or": [["vibe", "pre"], ["multiphase"]],
+	"not": ["post", "ph1", "ph2", "ph3", "ph4", "ph5", "ph6", "ph7", "ph8", "ph9", "moco"],
+	"bias": true,
+	"split": {"T1FS": 0, "T1gad": 1}
+	},
+
+"T1gad":{
+	"or": [["vibe", "post"], ["ph1", "multiphase"], ["\\)+\\("]],
+	"not": ["pre", "moco"],
+	"reg": "fast_affine",
+	"reg_target": "T1FS",
+	"reg_option": {"reg_com": 0},
+	"bias": true,
+	"split": {"T1FS": 0, "T1gad": 1}
+	},
+
+"T2FS":{
+	"or": [["stir"], ["t2", "fse", "ir"], ["t2", "tse"], ["t2", "fse"]],
+	"not": ["fat", "field", "phase", "bval", "dwi"],
+	"reg": "fast_affine",
+	"reg_target": "T1FS",
+	"reg_option": {"reg_com": 0},
+	"bias": true
+	},
+
+"B0": 	{
+	"or": [["b0"]],
+	"not": ["adc", "apparent", "post"],
+	"reg": "fast_diffeo",
+	"reg_target": "T2FS",
+	"reg_option": {"reg_com": 0},
+	"bias": false
+	},
+
+"DWI": 	{
+	"or": [["dwi"], ["trace"],["resolve"], ["diff"]],
+	"not": ["adc", "apparent", "post"],
+	"reg": "B0",
+	"bias": false,
+	"split": {"DWI": -1, "B0": 0}
+	},
+
+"ADC": 	{
+	"or": [["adc"], ["apparent", "diffusion"], ["avdc"]],
+	"not": ["exp", "cor", "sag", "eadc"],
+	"reg": "B0",
+	"bias": false
+	}
+}

@@ -1,0 +1,61 @@
+{
+"T1":	{
+	"or": [["(?i)t1", "(?i)no"], ["(?i)vibe", "(?i)pre"]],
+	"not": ["(?i)post", "(?i)vibe"],
+	"reg": "fast_affine",
+	"reg_target": "T1FS",
+	"reg_option": {"reg_com": 0},
+	"bias": true
+	},
+
+"T1FS":	{
+	"or": [["(?i)vibe", "(?i)pre"], ["(?i)multiphase"]],
+	"not": ["(?i)ph1", "(?i)ph2", "(?i)ph3", "(?i)ph4", "(?i)ph5", "(?i)ph6", "(?i)ph7", "(?i)ph8", "(?i)ph9", "(?i)moco", "(?i)pg"],
+	"bias": true,
+	"split": {"T1FS": 0, "T1gad": 1},
+	"reg_target": "None"
+	},
+
+"T1gad":{
+	"or": [["(?i)vibe", "(?i)postcon"], ["(?i)multiphase", "(?i)ph1"]],
+	"not": ["(?i)moco"],
+	"reg": "fast_affine",
+	"reg_target": "T1FS",
+	"reg_option": {"reg_com": 0},
+	"bias": true,
+	"split": {"T1FS": 0, "T1gad": 1}
+	},
+
+"T2FS":{
+	"or": [["(?i)t2", "(?i)fs"], ["(?i)stir"], ["(?i)t2", "(?i)ir"]],
+	"not": ["(?i)field", "(?i)phase", "(?i)bval", "(?i)dwi"],
+	"reg": "fast_affine",
+	"reg_target": "T1FS",
+	"reg_option": {"reg_com": 0},
+	"bias": true
+	},
+
+"B0": 	{
+	"or": [["(?i)b0"]],
+	"not": ["(?i)adc", "(?i)apparent", "(?i)post"],
+	"reg": "fast_diffeo",
+	"reg_target": "T2FS",
+	"reg_option": {"reg_com": 0},
+	"bias": false
+	},
+
+"DWI": 	{
+	"or": [["(?i)dwi"], ["(?i)resolve", "(?i)diff"], ["(?i)muse"]],
+	"not": ["(?i)adc", "(?i)apparent", "(?i)post"],
+	"reg": "B0",
+	"bias": false,
+	"split_func": "split_dwi"
+    },
+
+"ADC": 	{
+	"or": [["(?i)adc"], ["(?i)apparent", "(?i)diffusion"], ["(?i)avdc"]],
+	"not": ["(?i)exp", "(?i)cor", "(?i)sag", "(?i)eadc"],
+	"reg": "B0",
+	"bias": false
+	}
+}
